@@ -1,0 +1,46 @@
+.mw-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(8,8,8,0.06);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  z-index: 50;
+}
+
+.mw-header-left { display:flex; align-items:center; gap:12px; }
+
+.mw-logo-btn {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.mw-logo-icon { border-radius:8px; }
+
+.mw-brand-text { color: #0f6f63; font-size:18px; margin-left:4px; }
+
+.mw-header-right {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#4b5b56;
+}
+
+.mw-welcome { font-size:14px; color:#3a4b46; }
+
+.mw-logout {
+  background:#f25b5b;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}

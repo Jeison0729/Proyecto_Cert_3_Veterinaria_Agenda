@@ -1,0 +1,380 @@
+REQUERIMIENTO 1: "Agendar cita o servicio"
+
+Login 
+POST http://localhost:8086/api/usuarios/login
+
+Body:
+{
+  "usuario": "admin",
+  "password": "123456"
+}
+-- 
+Obtener mascota del cliente
+GET http://localhost:8086/api/mascotas/cliente/1
+--
+ Obtener personal disponible
+GET http://localhost:8086/api/personal
+-- 
+Obtener horario de atención
+GET http://localhost:8086/api/horarios/dia/3
+-- 
+Validar que NO sea festivo o feriado
+GET http://localhost:8086/api/festivos/fecha/2025-12-10
+--
+Validar que NO esté bloqueada la fecha
+GET http://localhost:8086/api/bloqueos
+--
+Validar disponibilidad del personal para esa fecha/hora
+GET http://localhost:8086/api/disponibilidad-personal/personal/1?inicio=2025-12-10&fin=2025-12-10
+-- 
+Validar conflictos de horario
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-10&horaInicio=10:00:00&horaFin=11:30:00&idsPersonal=1
+
+--
+AGENDAR CITA (CREAR)
+POST http://localhost:8086/api/agenda/crear
+Body:
+{
+  "idCliente": 1,
+  "idMascota": 1,
+  "fecha": "2025-12-10",
+  "hora": "10:00:00",
+  "idEstado": 1,
+  "idUsuarioRegistro": 1,
+  "idMedioSolicitud": 1,
+  "observaciones": "Corte clásico Golden",
+  "abonoInicial": 50.00,
+  "idMedioPago": 1,
+  "servicios": [
+    {
+      "idServicio": 1,
+      "idPersonal": 1,
+      "cantidad": 1,
+      "valorServicio": 130.00,
+      "adicionales": "Perfume especial"
+    }
+  ],
+  "recordatorioTipo": "PRE_CITA",
+  "recordatorioFecha": "2025-12-09T10:00:00"
+}
+
+RESPUESTA ESPERADA:
+{
+  "success": true,
+  "message": "Cita agendada exitosamente",
+  "data": {
+    "id": 3,
+    "codigo": "CITA-ABC123XYZ",
+    "fecha": "2025-12-10",
+    "hora": "10:00:00",
+    "cliente": "Juan Carlos Pérez Gómez",
+    "mascota": "Firulais",
+    "estado": "PENDIENTE",
+    "totalCita": 130.00,
+    "abonoInicial": 50.00
+  }
+}
+
+--
+Verificar cita creada
+GET http://localhost:8086/api/agenda/3
+--------------------------------------------------------------
+REQUERIMIENTO 2: "Asignar disponibilidad de los veterinarios"
+login
+---
+Obtener lista de personal
+GET http://localhost:8086/api/personal
+
+--
+CREAR DISPONIBILIDAD PERSONAL
+POST http://localhost:8086/api/disponibilidad-personal
+
+Body:
+{
+  "idPersonal": 1,
+  "fecha": "2025-12-15",
+  "horaInicio": "09:00:00",
+  "horaFin": "13:00:00",
+  "activo": true
+}
+
+--
+ Agregar más disponibilidad (tarde)
+POST http://localhost:8086/api/disponibilidad-personal
+
+Body:
+{
+  "idPersonal": 1,
+  "fecha": "2025-12-15",
+  "horaInicio": "14:00:00",
+  "horaFin": "18:00:00",
+  "activo": true
+}
+--
+Verificar disponibilidades creadas
+GET http://localhost:8086/api/disponibilidad-personal/personal/1?inicio=2025-12-15&fin=2025-12-15
+
+--------------------------------------------------------------
+REQUERIMIENTO 3: "Asignar tiempos estimados para los servicios"
+login...
+
+--
+CREAR SERVICIO CON TIEMPO ESTIMADO
+POST http://localhost:8086/api/servicios
+
+Body:
+{
+  "nombre": "Baño Medicado Express",
+  "idCategoria": 1,
+  "duracionMinutos": 45,
+  "precio": 85.00,
+  "descripcion": "Baño medicado para pieles sensibles - 45 minutos"
+}
+
+--
+Crear otro servicio con diferente duración
+POST http://localhost:8086/api/servicios
+
+Body:
+{
+  "nombre": "Spa Deluxe 2 Horas",
+  "idCategoria": 2,
+  "duracionMinutos": 120,
+  "precio": 200.00,
+  "descripcion": "Spa completo con masaje y aromaterapia - 120 minutos"
+}
+--
+Obtener servicios con sus duraciones
+GET http://localhost:8086/api/servicios
+
+---------------------------------------------------------------
+REQUERIMIENTO 4: "Notificaciones y recordatorios automáticos"
+login...
+
+--
+Crear una cita (que genera recordatorio automático)
+POST http://localhost:8086/api/agenda/crear
+
+Body:
+{
+  "idCliente": 1,
+  "idMascota": 1,
+  "fecha": "2025-12-12",
+  "hora": "11:00:00",
+  "idEstado": 1,
+  "idUsuarioRegistro": 1,
+  "idMedioSolicitud": 2,
+  "observaciones": "Recordatorio test",
+  "abonoInicial": 30.00,
+  "idMedioPago": 1,
+  "servicios": [
+    {
+      "idServicio": 1,
+      "idPersonal": 1,
+      "cantidad": 1,
+      "valorServicio": 130.00,
+      "adicionales": "Sin perfume"
+    }
+  ],
+  "recordatorioTipo": "PRE_CITA",
+  "recordatorioFecha": "2025-12-11T11:00:00"
+}
+
+--
+CREAR RECORDATORIO MANUAL
+POST http://localhost:8086/api/recordatorios
+
+Body:
+{
+  "idAgenda": 4,
+  "tipo": "PRE_CITA",
+  "descripcion": "Recordatorio 24 horas antes de la cita",
+  "fechaProgramada": "2025-12-11T11:00:00",
+  "medio": "LISTA"
+}
+
+--
+Crear recordatorio POST-CITA (después de completar)
+POST http://localhost:8086/api/recordatorios
+
+Body:
+{
+  "idAgenda": 4,
+  "tipo": "POST_CITA",
+  "descripcion": "Seguimiento post-servicio",
+  "fechaProgramada": "2025-12-19T11:00:00",
+  "medio": "LISTA"
+}
+--
+OBTENER RECORDATORIOS PENDIENTES
+GET http://localhost:8086/api/recordatorios/pendientes
+
+--
+Marcar recordatorio como enviado
+PUT http://localhost:8086/api/recordatorios/8/enviar
+
+----------------------------------------------------------
+REQUERIMIENTO 5: "Bloquear fechas no disponibles"
+login...
+
+--
+CREAR BLOQUEO DE FECHA (Ej: mantenimiento)
+POST http://localhost:8086/api/bloqueos
+
+Body:
+{
+  "fecha": "2025-12-25",
+  "descripcion": "Navidad - Local Cerrado",
+  "bloqueado": true
+}
+--
+ Crear otro bloqueo (Ej: reparaciones)
+POST http://localhost:8086/api/bloqueos
+
+Body:
+{
+  "fecha": "2025-12-20",
+  "descripcion": "Mantenimiento de equipos",
+  "bloqueado": true
+}
+
+--
+ Intentar agendar en fecha bloqueada (DEBE FALLAR)
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-25&horaInicio=10:00:00&horaFin=11:30:00&idsPersonal=1
+
+--
+Obtener lista de bloqueos
+GET http://localhost:8086/api/bloqueos
+
+--
+ Actualizar un bloqueo (cambiar descripción)
+PUT http://localhost:8086/api/bloqueos/1
+
+--
+Eliminar un bloqueo
+DELETE http://localhost:8086/api/bloqueos/2
+
+--------------------------------------------------------
+REQUERIMIENTO 6: "Visualizar agenda"
+login...
+
+--
+VER AGENDA POR PERÍODO (calendarios)
+GET http://localhost:8086/api/agenda/periodo?fechaInicio=2025-12-01&fechaFin=2025-12-31
+
+--
+Ver citas de un cliente específico
+GET http://localhost:8086/api/agenda/cliente/1
+--
+Ver citas de una mascota específica
+GET http://localhost:8086/api/agenda/mascota/1
+
+--
+Ver una cita específica (detalle)
+GET http://localhost:8086/api/agenda/1
+
+--
+Ver horas disponibles para agendar (para el frontend)
+GET http://localhost:8086/api/agenda/horas-disponibles?idPersonal=1&fecha=2025-12-15
+
+--
+Ver resumen de disponibilidad del personal
+GET http://localhost:8086/api/agenda/disponibilidad/personal/1
+
+-------------------------------------------------------------
+REQUERIMIENTO 7: "Validación de conflictos de horario"
+login...
+
+--
+VALIDAR SIN CONFLICTOS (horario válido)
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-10&horaInicio=10:00:00&horaFin=11:30:00&idsPersonal=1
+✅ SIN CONFLICTOS - SE PUEDE AGENDAR
+
+--
+VALIDAR CON CONFLICTO - Día no hábil
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-07&horaInicio=10:00:00&horaFin=11:30:00&idsPersonal=1
+-- ❌ CONFLICTO: Domingo no se atiende
+
+--
+VALIDAR CON CONFLICTO - Fuera de horario
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-10&horaInicio=08:00:00&horaFin=09:00:00&idsPersonal=1
+❌ CONFLICTO: Se abre a las 09:00
+
+--
+VALIDAR CON CONFLICTO - Personal no disponible
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-10&horaInicio=10:00:00&horaFin=11:30:00&idsPersonal=2
+❌ CONFLICTO: Personal 2 no tiene disponibilidad ese día
+
+--
+VALIDAR CON CONFLICTO - Solapamiento de citas
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-03&horaInicio=10:30:00&horaFin=11:30:00&idsPersonal=1
+❌ CONFLICTO: Ya hay cita programada de 10:00 a 11:30
+
+--
+VALIDAR MÚLTIPLES CONFLICTOS
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-03&horaInicio=10:00:00&horaFin=12:00:00&idsPersonal=1
+✅ REQUERIMIENTO 7 CUMPLIDO
+
+-----------------------------------
+REQUERIMIENTO 8: "Reasignación de citas canceladas"
+login...
+--
+Obtener una cita existente
+GET http://localhost:8086/api/agenda/1
+
+--
+CANCELAR LA CITA
+PUT http://localhost:8086/api/agenda/1/cancelar?motivo=Cliente%20solicita%20cambio&usuarioId=1
+✅ CITA CANCELADA
+
+--
+Verificar que está cancelada
+GET http://localhost:8086/api/agenda/1
+✅ ESTADO CONFIRMADO: CANCELADA
+
+--
+ Validar disponibilidad en nueva fecha/hora
+POST http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-15&horaInicio=14:00:00&horaFin=15:30:00&idsPersonal=1
+✅ NUEVA FECHA DISPONIBLE
+
+--
+REASIGNAR LA CITA A NUEVA FECHA/HORA
+PUT http://localhost:8086/api/agenda/1/reasignar?nuevaFecha=2025-12-15&nuevaHora=14:00:00
+✅ CITA REASIGNADA EXITOSAMENTE
+--
+Verificar cita reasignada
+GET http://localhost:8086/api/agenda/1
+✅ REQUERIMIENTO 8 CUMPLIDO
+
+
+---------------------------------------------------------------
+REQUERIMIENTO 9: "Informe de citas"
+login...
+
+--
+REPORTE DIARIO
+GET http://localhost:8086/api/agenda/reporte/dia?fecha=2025-12-10
+
+--
+ REPORTE POR PERÍODO (Mensual)
+GET http://localhost:8086/api/agenda/reporte/periodo?fechaInicio=2025-12-01&fechaFin=2025-12-31
+
+--
+INDICADORES DE PERSONAL (Performance)
+GET http://localhost:8086/api/agenda/reporte/personal?fechaInicio=2025-12-01&fechaFin=2025-12-31
+
+--
+ALERTAS AUTOMÁTICAS
+GET http://localhost:8086/api/agenda/alertas?fechaInicio=2025-12-01&fechaFin=2025-12-31
+
+--
+ Ver citas del período para análisis
+GET http://localhost:8086/api/agenda/periodo?fechaInicio=2025-12-01&fechaFin=2025-12-31
+✅ REQUERIMIENTO 9 CUMPLIDO - INFORMES COMPLETOS
+
+
+
+
+
+
+

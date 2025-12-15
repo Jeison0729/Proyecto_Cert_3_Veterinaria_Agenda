@@ -1,0 +1,41 @@
+.mw-page {
+  padding: 24px;
+}
+
+.mw-page-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #50352c;
+  margin-bottom: 20px;
+}
+
+.mw-btn-primary {
+  background: #D9813B;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  transition: 0.2s;
+}
+.mw-btn-primary:hover {
+  background: #c47335;
+}
+
+.mw-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.mw-table th {
+  background: #f4e9df;
+  padding: 10px;
+  text-align: left;
+}
+.mw-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e4d9ce;
+}
+
+.mw-actions button {
+  margin-right: 6px;
+}

@@ -1,0 +1,1209 @@
+{
+	"info": {
+		"_postman_id": "a7940f84-b82d-40a4-9553-d5be7e488c33",
+		"name": "Manada Woof",
+		"description": "Grupo Jesus Chavesta y Jeison Ruiz",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43792032"
+	},
+	"item": [
+		{
+			"name": "1. Login",
+			"item": [
+				{
+					"name": "Login Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuario\": \"admin\",\r\n  \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Recepción",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"ana\", \r\n    \"password\": \"123\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Crear",
+			"item": [
+				{
+					"name": "Crear Cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombres\": \"Carlos\",\n  \"apellidos\": \"Mendoza\",\n  \"dni\": \"12345678\",\n  \"celular\": \"987654321\",\n  \"celular2\": \"951234567\",\n  \"email\": \"carlos@gmail.com\",\n  \"direccion\": \"Av. Principal 123\",\n  \"distrito\": \"Miraflores\",\n  \"referencia\": \"Frente al parque\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Mascota",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Bella\",\n  \"idEspecie\": 1,\n  \"raza\": \"Labrador\",\n  \"idSexo\": 2,\n  \"fechaNacimiento\": \"2022-05-10\",\n  \"color\": \"Negro\",\n  \"esterilizado\": true,\n  \"pesoActual\": 35.50,\n  \"observaciones\": \"Muy amigable\",\n  \"foto\": \"bella.jpg\",\n  \"idCliente\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/mascotas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"mascotas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Servicio",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "/*{\n  \"nombre\": \"Baño Medicado Express\",\n  \"idCategoria\": 1,\n  \"duracionMinutos\": 45,\n  \"precio\": 85.00,\n  \"descripcion\": \"Baño medicado para pieles sensibles - 45 minutos\"\n}*/\n\n{\n  \"nombre\": \"Spa Deluxe 2 Horas\",\n  \"idCategoria\": 2,\n  \"duracionMinutos\": 120,\n  \"precio\": 200.00,\n  \"descripcion\": \"Spa completo con masaje y aromaterapia - 120 minutos\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/servicios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"servicios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Disponibilidad Personal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/*\r\n{\r\n  \"idPersonal\": 1,\r\n  \"fecha\": \"2025-12-15\",\r\n  \"horaInicio\": \"09:00:00\",\r\n  \"horaFin\": \"13:00:00\",\r\n  \"activo\": true\r\n}\r\n*/\r\n{\r\n  \"idPersonal\": 1,\r\n  \"fecha\": \"2025-12-12\",\r\n  \"horaInicio\": \"09:00:00\",\r\n  \"horaFin\": \"18:00:00\",\r\n  \"activo\": true\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/disponibilidad-personal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"disponibilidad-personal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Cita",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idCliente\": 1,\n  \"idMascota\": 1,\n  \"fecha\": \"2025-12-12\",\n  \"hora\": \"11:00:00\",\n  \"idEstado\": 1,\n  \"idUsuarioRegistro\": 1,\n  \"idMedioSolicitud\": 2,\n  \"observaciones\": \"Recordatorio test\",\n  \"abonoInicial\": 30.00,\n  \"idMedioPago\": 1,\n  \"servicios\": [\n    {\n      \"idServicio\": 1,\n      \"idPersonal\": 1,\n      \"cantidad\": 1,\n      \"valorServicio\": 130.00,\n      \"adicionales\": \"Sin perfume\"\n    }\n  ],\n  \"recordatorioTipo\": \"PRE_CITA\",\n  \"recordatorioFecha\": \"2025-12-11T11:00:00\"\n}\n\n\n{\n  \"idCliente\": 1,\n  \"idMascota\": 1,\n  \"fecha\": \"2025-12-10\",\n  \"hora\": \"10:00:00\",\n  \"idEstado\": 1,\n  \"idUsuarioRegistro\": 1,\n  \"idMedioSolicitud\": 1,\n  \"observaciones\": \"Corte clásico Golden\",\n  \"abonoInicial\": 50.00,\n  \"idMedioPago\": 1,\n  \"servicios\": [\n    {\n      \"idServicio\": 1,\n      \"idPersonal\": 1,\n      \"cantidad\": 1,\n      \"valorServicio\": 130.00,\n      \"adicionales\": \"Perfume especial\",\n      \"observaciones\": \"Sin cambios\"\n    }\n  ],\n  \"recordatorioTipo\": \"PRE_CITA\",\n  \"recordatorioFecha\": \"2025-12-09T10:00:00\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validar conflictos de horario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"idPersonal\": 1,\r\n  \"fecha\": \"2025-12-05\",\r\n  \"horaInicio\": \"09:00:00\",\r\n  \"horaFin\": \"12:00:00\",\r\n  \"activo\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/validar/conflictos?fecha=2025-12-10&horaInicio=10:00:00&horaFin=11:30:00&idsPersonal=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"validar",
+								"conflictos"
+							],
+							"query": [
+								{
+									"key": "fecha",
+									"value": "2025-12-10"
+								},
+								{
+									"key": "horaInicio",
+									"value": "10:00:00"
+								},
+								{
+									"key": "horaFin",
+									"value": "11:30:00"
+								},
+								{
+									"key": "idsPersonal",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Recordatorio",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "/*{\n  \"idAgenda\": 1,\n  \"tipo\": \"PRE_CITA\",\n  \"descripcion\": \"Recordatorio 24 horas antes de la cita\",\n  \"fechaProgramada\": \"2025-12-11T11:00:00\",\n  \"medio\": \"LISTA\"\n}*/\n\n{\n  \"idAgenda\": 2,\n  \"tipo\": \"POST_CITA\",\n  \"descripcion\": \"Seguimiento post-servicio\",\n  \"fechaProgramada\": \"2025-12-19T11:00:00\",\n  \"medio\": \"LISTA\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/recordatorios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"recordatorios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bloquear Fecha",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "/*\n{\n  \"fecha\": \"2025-12-25\",\n  \"descripcion\": \"Navidad - Local Cerrado\",\n  \"bloqueado\": true\n}\n*/\n\n{\n  \"fecha\": \"2025-12-20\",\n  \"descripcion\": \"Mantenimiento de equipos\",\n  \"bloqueado\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/bloqueos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"bloqueos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Consultas",
+			"item": [
+				{
+					"name": "Listar Todas las Citas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/agenda",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Citas x Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Citas de un rango",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/periodo?fechaInicio=2025-12-01&fechaFin=2025-12-31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"periodo"
+							],
+							"query": [
+								{
+									"key": "fechaInicio",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-12-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Citas por Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/cliente/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Citas por Mascota",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/mascota/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"mascota",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Recordatorios Pendientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/recordatorios/pendientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"recordatorios",
+								"pendientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Mascotas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/mascotas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"mascotas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mascotas del Cliente 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/mascotas/cliente/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"mascotas",
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cliente por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Personal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/personal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"personal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Servicios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/servicios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"servicios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Categorias Servicios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/categorias-servicio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"categorias-servicio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Horarios de atencion por dia",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/horarios/dia/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"horarios",
+								"dia",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Horarios de atencion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/horarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"horarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Horarios Festivos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/festivos/fecha/2025-12-10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"festivos",
+								"fecha",
+								"2025-12-10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Fechas bloqueadas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/bloqueos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"bloqueos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Horarios Bloqueados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/bloqueos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"bloqueos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Disponibilidad de empleado",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"idPersonal\": 1,\r\n  \"fecha\": \"2025-12-05\",\r\n  \"horaInicio\": \"09:00:00\",\r\n  \"horaFin\": \"12:00:00\",\r\n  \"activo\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/disponibilidad/personal/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"disponibilidad",
+								"personal",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Disponibilidades Creadas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"idPersonal\": 1,\r\n  \"fecha\": \"2025-12-05\",\r\n  \"horaInicio\": \"09:00:00\",\r\n  \"horaFin\": \"12:00:00\",\r\n  \"activo\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/disponibilidad-personal/personal/1?inicio=2025-12-15&fin=2025-12-15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"disponibilidad-personal",
+								"personal",
+								"1"
+							],
+							"query": [
+								{
+									"key": "inicio",
+									"value": "2025-12-15"
+								},
+								{
+									"key": "fin",
+									"value": "2025-12-15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Disponibilidad de horas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"idPersonal\": 1,\r\n  \"fecha\": \"2025-12-05\",\r\n  \"horaInicio\": \"09:00:00\",\r\n  \"horaFin\": \"12:00:00\",\r\n  \"activo\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/horas-disponibles?idPersonal=2&fecha=2025-12-15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"horas-disponibles"
+							],
+							"query": [
+								{
+									"key": "idPersonal",
+									"value": "2"
+								},
+								{
+									"key": "fecha",
+									"value": "2025-12-15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reportes Diarios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/reporte/dia?fecha=2025-12-10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"reporte",
+								"dia"
+							],
+							"query": [
+								{
+									"key": "fecha",
+									"value": "2025-12-10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reportes Mensuales",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/reporte/periodo?fechaInicio=2025-12-01&fechaFin=2025-12-31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"reporte",
+								"periodo"
+							],
+							"query": [
+								{
+									"key": "fechaInicio",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-12-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Indicadores Personal",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/reporte/personal?fechaInicio=2025-12-01&fechaFin=2025-12-31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"reporte",
+								"personal"
+							],
+							"query": [
+								{
+									"key": "fechaInicio",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-12-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alertas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/alertas?fechaInicio=2025-12-01&fechaFin=2025-12-31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"alertas"
+							],
+							"query": [
+								{
+									"key": "fechaInicio",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-12-31"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Actualizar",
+			"item": [
+				{
+					"name": "Actualizar fecha bloqueo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fecha\": \"2025-12-25\",\r\n  \"descripcion\": \"Navidad - Local Cerrado (Actualizado)\",\r\n  \"bloqueado\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/bloqueos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"bloqueos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Cita",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idCliente\": 1,\r\n  \"idMascota\": 1,\r\n  \"fecha\": \"2025-12-11\",\r\n  \"hora\": \"11:00:00\",\r\n  \"idEstado\": 1,\r\n  \"idUsuarioRegistro\": 1,\r\n  \"idMedioSolicitud\": 1,\r\n  \"observaciones\": \"Cambio de horario\",\r\n  \"abonoInicial\": 50.00,\r\n  \"idMedioPago\": 1,\r\n  \"servicios\": [\r\n    {\r\n      \"idServicio\": 1,\r\n      \"idPersonal\": 1,\r\n      \"cantidad\": 1,\r\n      \"valorServicio\": 130.00,\r\n      \"adicionales\": \"Sin perfume\",\r\n      \"observaciones\": \"Actualizado\"\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Personal",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombres\": \"Luis Miguel\",\n  \"apellidos\": \"Torres Vega\",\n  \"telefono\": \"987123456\",\n  \"especialidad\": \"Grooming Expert\",\n  \"colorCalendario\": \"#e74c3c\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/personal/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"personal",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Marcar Recordatorio como enviado",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/recordatorios/2/enviar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"recordatorios",
+								"2",
+								"enviar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Eliminar",
+			"item": [
+				{
+					"name": "Eliminar Cita",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8086/api/agenda/1/cancelar?motivo=Cliente%20solicita%20cambio&usuarioId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"agenda",
+								"1",
+								"cancelar"
+							],
+							"query": [
+								{
+									"key": "motivo",
+									"value": "Cliente%20solicita%20cambio"
+								},
+								{
+									"key": "usuarioId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar fecha bloqueo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/bloqueos/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"bloqueos",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

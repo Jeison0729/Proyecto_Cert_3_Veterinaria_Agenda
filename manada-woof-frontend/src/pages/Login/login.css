@@ -1,0 +1,66 @@
+/* login.css */
+.mw-login-page {
+  display:flex;
+  min-height:100vh;
+  align-items:center;
+  justify-content:center;
+  background: #f4f6f5;
+  padding:20px;
+}
+
+.mw-login-card {
+  width:900px;
+  display:flex;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.15);
+  background:white;
+}
+
+/* left visual */
+.mw-login-left {
+  flex:1;
+  background:#cde7df;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+  gap:8px;
+}
+.mw-logo-large { font-size:64px; }
+.mw-login-left h2 { margin:0; color:#0f6f63; }
+
+/* form */
+.mw-login-form {
+  width:420px;
+  padding:36px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  justify-content:center;
+}
+.mw-login-form h3 { margin:0 0 6px 0; color:#1f3b38; }
+.mw-login-form input {
+  padding:12px 14px;
+  border-radius:6px;
+  border:1px solid #d9d9d9;
+  background:#fafafa;
+}
+.mw-login-form button {
+  margin-top:8px;
+  padding:10px 12px;
+  border-radius:8px;
+  border:none;
+  background:#07a3d6;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+.mw-login-error {
+  background:#fdecea;
+  color:#b33;
+  padding:8px;
+  border-radius:6px;
+  font-size:14px;
+}

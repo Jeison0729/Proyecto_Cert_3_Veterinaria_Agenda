@@ -1,0 +1,16 @@
+.mw-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.mw-layout-body {
+  flex: 1;
+  display: flex;
+}
+
+.mw-layout-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
