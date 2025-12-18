@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -9,57 +9,84 @@ import "../../styles/list-pages.css";
 export default function CalendarView() {
   const [events, setEvents] = useState([]);
 
-  useEffect(() => {
-    // Carga inicial: rango del mes actual -> tu backend provee periodo endpoint
-    (async () => {
-      try {
-        const today = new Date().toISOString().slice(0,10);
-        const res = await getAgendaByFecha(today);
-        // espera array de citas: convertir a eventos de FullCalendar
-        const citas = Array.isArray(res) ? res : (res?.data || []);
-        const ev = citas.map(c => ({
-          id: c.id,
-          title: `${c.cliente ?? c.clienteNombre ?? ""} - ${c.mascota ?? c.mascotaNombre ?? ""}`,
-          start: `${c.fecha}T${(c.hora||"09:00")}`,
-          end: (() => {
-            // intenta sumar duracion_estimada_min o duracion_min por servicios
-            const dur = c.duracion_estimada_min || c.duracion_min || 60;
-            const start = new Date(`${c.fecha}T${c.hora||"09:00"}`);
-            start.setMinutes(start.getMinutes() + Number(dur));
-            return start.toISOString();
-          })()
-        }));
-        setEvents(ev);
-      } catch (err) {
-        console.error("Error cargando agenda:", err);
-        setEvents([]);
-      }
-    })();
-  }, []);
+  // Cargar citas según rango visible
+  async function loadAgendaByRange(start, end) {
+    try {
+      const startDate = start.toISOString().slice(0, 10);
+      const endDate = end.toISOString().slice(0, 10);
 
-  function handleDateClick(arg) {
-    // ejemplo: al click abrir modal para crear cita con fecha prellenada
-    alert("Click en fecha: " + arg.dateStr);
+      const citas = [];
+
+      // recorrer día por día porque tu backend es por fecha
+      const current = new Date(startDate);
+      const last = new Date(endDate);
+
+      while (current <= last) {
+        const fecha = current.toISOString().slice(0, 10);
+        const res = await getAgendaByFecha(fecha);
+        const data = Array.isArray(res) ? res : res?.data || [];
+        citas.push(...data);
+        current.setDate(current.getDate() + 1);
+      }
+
+      console.log("CITAS CALENDARIO:", citas);
+
+      const mapped = citas.map((c) => {
+        const startTime = `${c.fecha}T${c.hora}`;
+        const duration = c.duracionEstimadaMin || 60;
+
+        const endTime = new Date(startTime);
+        endTime.setMinutes(endTime.getMinutes() + duration);
+
+        return {
+          id: c.id,
+          title: `${c.clienteNombre} - ${c.mascotaNombre}`,
+          start: startTime,
+          end: endTime.toISOString(),
+          extendedProps: {
+            cliente: c.clienteNombre,
+            mascota: c.mascotaNombre,
+            estado: c.estadoNombre,
+            observaciones: c.observaciones,
+          },
+        };
+      });
+
+      setEvents(mapped);
+    } catch (error) {
+      console.error("Error cargando agenda:", error);
+    }
+  }
+
+  function handleDatesSet(arg) {
+    loadAgendaByRange(arg.start, arg.end);
   }
 
   function handleEventClick(info) {
-    // ver detalle de la cita
-    alert("Cita: " + info.event.title);
+    const { cliente, mascota, estado } = info.event.extendedProps;
+
+    alert(
+      `Cita\n\n` +
+        `Cliente: ${cliente}\n` +
+        `Mascota: ${mascota}\n` +
+        `Estado: ${estado}`
+    );
   }
 
   return (
     <div className="mw-page">
-      <h2 className="mw-page-title">Calendario</h2>
+      <h2 className="mw-page-title"> Calendario de Citas</h2>
+
       <FullCalendar
-        plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
-        initialView="timeGridWeek"
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
         headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
         events={events}
-        dateClick={handleDateClick}
+        datesSet={handleDatesSet}
         eventClick={handleEventClick}
         height="auto"
       />

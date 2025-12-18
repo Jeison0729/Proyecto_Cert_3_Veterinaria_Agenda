@@ -1,5 +1,5 @@
 .mw-hero-bs {
-  background: linear-gradient(180deg, #07a3d6, #0093bf);
+  background: linear-gradient(180deg, #2294ba, #09dc22);
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
@@ -7,19 +7,19 @@
 /* BOTONES */
 .mw-btn {
   background: #dff3ee;
-  color: #0f6f63;
+  color: #073e38;
   font-weight: 600;
   border-radius: 8px;
 }
 
 .mw-btn:hover {
-  background: #c9ebe3;
+  background: #747204;
 }
 
 /* INDICADORES */
 .mw-stat-card {
   border: none;
-  border-left: 4px solid #07a3d6;
+  border-left: 4px solid #07a2d651;
   border-radius: 8px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }

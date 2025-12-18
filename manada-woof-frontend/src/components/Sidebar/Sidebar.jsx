@@ -14,22 +14,12 @@ export default function Sidebar() {
       <div className="mw-sidebar-section">
         <div className="mw-sidebar-btn primary">Agenda</div>
         <nav className="mw-nav">
-          <NavLink
-            to="/agendamiento"
-            className={({ isActive }) =>
-              "mw-nav-link" + (isActive ? " active" : "")
-            }
-          >
-            Agendar cita
+          <NavLink to="/agendamiento" className="mw-nav-link">
+            Agendar
           </NavLink>
 
-          <NavLink
-            to="/consultar-citas"
-            className={({ isActive }) =>
-              "mw-nav-link" + (isActive ? " active" : "")
-            }
-          >
-            Consultar citas
+          <NavLink to="/calendario" className="mw-nav-link">
+            Calendario
           </NavLink>
         </nav>
       </div>

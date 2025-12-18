@@ -10,8 +10,8 @@ export default function Dashboard() {
       {/* HERO */}
       <div className="card mb-4 mw-hero-bs">
         <div className="card-body text-center">
-          <h4 className="font-weight-bold text-white mb-1">Panel principal</h4>
-          <p className="text-white-50 mb-3">
+          <h4 className="font-weight-bold text-black mb-1">Panel principal</h4>
+          <p className="text-black-50 mb-3">
             Accesos rápidos a las principales funciones
           </p>
 
@@ -39,6 +39,12 @@ export default function Dashboard() {
               onClick={() => navigate("/disponibilidad")}
             >
               Calendario Personal
+            </button>
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/calendario")}
+            >
+              Ver calendario
             </button>
             <button
               className="btn mw-btn mx-2 mb-2"

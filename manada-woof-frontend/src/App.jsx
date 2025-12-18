@@ -97,7 +97,7 @@ export default function App() {
         />
 
         <Route
-          path="/calendar"
+          path="/calendario"
           element={
             <PrivateRoute>
               <CalendarView />
