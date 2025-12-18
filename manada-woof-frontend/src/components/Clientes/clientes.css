@@ -10,7 +10,7 @@
 }
 
 .mw-btn-primary {
-  background: #D9813B;
+  background: #d9813b;
   color: white;
   padding: 10px 16px;
   border-radius: 8px;
@@ -34,6 +34,19 @@
 .mw-table td {
   padding: 10px;
   border-bottom: 1px solid #e4d9ce;
+}
+
+.mw-actions button {
+  margin-right: 6px;
+}
+
+.mw-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .mw-actions button {
