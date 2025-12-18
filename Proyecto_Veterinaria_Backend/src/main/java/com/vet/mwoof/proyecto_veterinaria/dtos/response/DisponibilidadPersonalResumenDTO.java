@@ -19,7 +19,6 @@ public class DisponibilidadPersonalResumenDTO {
     private Integer citasProgramadas;
     private Integer citasCompletadas;
     private Integer citasCanceladas;
-    private BigDecimal tarifaPromedio;
     private Double porcentajeOcupacion;
     private String estado; // DISPONIBLE, CARGADO, SOBRECARGADO
 }

@@ -1,43 +1,92 @@
 import React from "react";
-import "./dashboard.css";
 import { useNavigate } from "react-router-dom";
+import "./dashboard.css";
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
   return (
-    <div className="mw-dashboard">
-      <div className="mw-hero">
-        <h1>¿Qué desea hacer?</h1>
-        <div className="mw-actions">
-          <button onClick={()=>navigate("/mascotas")} className="mw-action">🐶 Mascotas</button>
-          <button onClick={()=>navigate("/agendamiento")} className="mw-action primary">📅 Agendar Cita</button>
-          <button onClick={()=>navigate("/agenda")} className="mw-action">🔎 Consultar Agenda</button>
-          <button onClick={()=>navigate("/personal")} className="mw-action">👩‍⚕️ Veterinarios</button>
-          <button onClick={()=>navigate("/servicios")} className="mw-action">🛠 Servicios</button>
-          <button onClick={()=>navigate("/clientes")} className="mw-action">👥 Clientes</button>
-          <button onClick={()=>navigate("/informes")} className="mw-action">📊 Informes</button>
+    <div className="container mt-4">
+      {/* HERO */}
+      <div className="card mb-4 mw-hero-bs">
+        <div className="card-body text-center">
+          <h4 className="font-weight-bold text-white mb-1">Panel principal</h4>
+          <p className="text-white-50 mb-3">
+            Accesos rápidos a las principales funciones
+          </p>
+
+          <div className="d-flex flex-wrap justify-content-center">
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/mascotas")}
+            >
+              Mascotas
+            </button>
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/agendamiento")}
+            >
+              Agendar Cita
+            </button>
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/personal")}
+            >
+              Veterinarios
+            </button>
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/disponibilidad")}
+            >
+              Calendario Personal
+            </button>
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/servicios")}
+            >
+              Servicios
+            </button>
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/clientes")}
+            >
+              Clientes
+            </button>
+            <button
+              className="btn mw-btn mx-2 mb-2"
+              onClick={() => navigate("/informes")}
+            >
+              Informes
+            </button>
+          </div>
         </div>
       </div>
 
-      <section className="mw-cards">
-        <div className="mw-card-ind">
-          <div className="mw-card-title">Total Mascotas</div>
-          <div className="mw-card-value">128</div>
+      {/* RESUMEN */}
+      <div className="d-flex align-items-center mb-2">
+        <h6 className="mb-0 font-weight-bold text-muted">Resumen general</h6>
+        <hr className="flex-grow-1 ml-3" />
+      </div>
+
+      <div className="row">
+        <DashboardCard title="Total Mascotas" value="10" />
+        <DashboardCard title="Veterinarios Activos" value="6" />
+        <DashboardCard title="Citas Hoy" value="8" />
+        <DashboardCard title="Servicios Realizados" value="42" />
+      </div>
+    </div>
+  );
+}
+
+function DashboardCard({ title, value }) {
+  return (
+    <div className="col-md-3 col-sm-6 mb-3">
+      <div className="card mw-stat-card">
+        <div className="card-body">
+          <small className="text-muted">{title}</small>
+          <h4 className="font-weight-bold mw-text mb-0">{value}</h4>
         </div>
-        <div className="mw-card-ind">
-          <div className="mw-card-title">Veterinarios Activos</div>
-          <div className="mw-card-value">12</div>
-        </div>
-        <div className="mw-card-ind">
-          <div className="mw-card-title">Citas Hoy</div>
-          <div className="mw-card-value">8</div>
-        </div>
-        <div className="mw-card-ind">
-          <div className="mw-card-title">Servicios Realizados</div>
-          <div className="mw-card-value">42</div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 }

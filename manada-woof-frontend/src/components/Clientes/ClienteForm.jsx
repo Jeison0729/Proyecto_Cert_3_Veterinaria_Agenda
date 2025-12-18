@@ -18,14 +18,14 @@ export default function ClientesForm({ editData, onClose, onSaved }) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Si está editando, cargar datos del cliente
+  // Si es edición, cargar datos
   useEffect(() => {
     if (editData) {
       setFormData(editData);
     }
   }, [editData]);
 
-  // Validar campos
+  // Validar formulario
   const validar = () => {
     const newErrors = {};
     if (!formData.nombres.trim()) newErrors.nombres = "El nombre es requerido";
@@ -36,11 +36,14 @@ export default function ClientesForm({ editData, onClose, onSaved }) {
       newErrors.dni = "El DNI debe tener 8 dígitos";
     if (!formData.celular.trim())
       newErrors.celular = "El teléfono es requerido";
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email inválido";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Guardar cliente
+  // Guardar
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validar()) return;
@@ -48,11 +51,9 @@ export default function ClientesForm({ editData, onClose, onSaved }) {
     setLoading(true);
     try {
       if (editData?.id) {
-        // ACTUALIZAR cliente existente
         await updateCliente(editData.id, formData);
         alert("Cliente actualizado correctamente");
       } else {
-        // CREAR cliente nuevo
         await createCliente(formData);
         alert("Cliente creado correctamente");
       }
@@ -65,309 +66,149 @@ export default function ClientesForm({ editData, onClose, onSaved }) {
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: "rgba(0,0,0,0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 1000,
-      }}
-      onClick={onClose}
-    >
-      <div
-        style={{
-          background: "white",
-          borderRadius: "8px",
-          maxWidth: "500px",
-          width: "90%",
-          padding: "20px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3 style={{ marginTop: 0, color: "#50352c" }}>
-          {editData ? "Editar Cliente" : "Nuevo Cliente"}
-        </h3>
+    <div className="mw-modal-overlay" onClick={onClose}>
+      <div className="mw-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="mw-modal-header">
+          <h3>{editData ? "Editar Cliente" : "Nuevo Cliente"}</h3>
+          <button className="mw-modal-close" onClick={onClose}>
+            ✕
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Nombres *
-            </label>
-            <input
-              type="text"
-              value={formData.nombres}
-              onChange={(e) =>
-                setFormData({ ...formData, nombres: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: errors.nombres ? "2px solid red" : "1px solid #ccc",
-              }}
-            />
-            {errors.nombres && (
-              <span style={{ color: "red", fontSize: "12px" }}>
-                {errors.nombres}
-              </span>
-            )}
+        <form onSubmit={handleSubmit} className="mw-form">
+          <div className="mw-form-row">
+            <div className="mw-form-group">
+              <label>Nombres *</label>
+              <input
+                type="text"
+                value={formData.nombres}
+                onChange={(e) =>
+                  setFormData({ ...formData, nombres: e.target.value })
+                }
+                className={errors.nombres ? "mw-input-error" : ""}
+              />
+              {errors.nombres && (
+                <span className="mw-error">{errors.nombres}</span>
+              )}
+            </div>
+
+            <div className="mw-form-group">
+              <label>Apellidos *</label>
+              <input
+                type="text"
+                value={formData.apellidos}
+                onChange={(e) =>
+                  setFormData({ ...formData, apellidos: e.target.value })
+                }
+                className={errors.apellidos ? "mw-input-error" : ""}
+              />
+              {errors.apellidos && (
+                <span className="mw-error">{errors.apellidos}</span>
+              )}
+            </div>
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Apellidos *
-            </label>
-            <input
-              type="text"
-              value={formData.apellidos}
-              onChange={(e) =>
-                setFormData({ ...formData, apellidos: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: errors.apellidos ? "2px solid red" : "1px solid #ccc",
-              }}
-            />
-            {errors.apellidos && (
-              <span style={{ color: "red", fontSize: "12px" }}>
-                {errors.apellidos}
-              </span>
-            )}
+          <div className="mw-form-row">
+            <div className="mw-form-group">
+              <label>DNI *</label>
+              <input
+                type="text"
+                maxLength="8"
+                value={formData.dni}
+                onChange={(e) =>
+                  setFormData({ ...formData, dni: e.target.value })
+                }
+                className={errors.dni ? "mw-input-error" : ""}
+              />
+              {errors.dni && <span className="mw-error">{errors.dni}</span>}
+            </div>
+
+            <div className="mw-form-group">
+              <label>Teléfono Principal *</label>
+              <input
+                type="text"
+                value={formData.celular}
+                onChange={(e) =>
+                  setFormData({ ...formData, celular: e.target.value })
+                }
+                className={errors.celular ? "mw-input-error" : ""}
+              />
+              {errors.celular && (
+                <span className="mw-error">{errors.celular}</span>
+              )}
+            </div>
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              DNI *
-            </label>
-            <input
-              type="text"
-              maxLength="8"
-              value={formData.dni}
-              onChange={(e) =>
-                setFormData({ ...formData, dni: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: errors.dni ? "2px solid red" : "1px solid #ccc",
-              }}
-            />
-            {errors.dni && (
-              <span style={{ color: "red", fontSize: "12px" }}>
-                {errors.dni}
-              </span>
-            )}
+          <div className="mw-form-row">
+            <div className="mw-form-group">
+              <label>Teléfono Secundario</label>
+              <input
+                type="text"
+                value={formData.celular2}
+                onChange={(e) =>
+                  setFormData({ ...formData, celular2: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="mw-form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                className={errors.email ? "mw-input-error" : ""}
+              />
+              {errors.email && <span className="mw-error">{errors.email}</span>}
+            </div>
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Teléfono Principal *
-            </label>
-            <input
-              type="text"
-              value={formData.celular}
-              onChange={(e) =>
-                setFormData({ ...formData, celular: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: errors.celular ? "2px solid red" : "1px solid #ccc",
-              }}
-            />
-            {errors.celular && (
-              <span style={{ color: "red", fontSize: "12px" }}>
-                {errors.celular}
-              </span>
-            )}
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Teléfono Secundario
-            </label>
-            <input
-              type="text"
-              value={formData.celular2}
-              onChange={(e) =>
-                setFormData({ ...formData, celular2: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Dirección
-            </label>
+          <div className="mw-form-group">
+            <label>Dirección</label>
             <input
               type="text"
               value={formData.direccion}
               onChange={(e) =>
                 setFormData({ ...formData, direccion: e.target.value })
               }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-              }}
             />
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Distrito
-            </label>
-            <input
-              type="text"
-              value={formData.distrito}
-              onChange={(e) =>
-                setFormData({ ...formData, distrito: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-              }}
-            />
+          <div className="mw-form-row">
+            <div className="mw-form-group">
+              <label>Distrito</label>
+              <input
+                type="text"
+                value={formData.distrito}
+                onChange={(e) =>
+                  setFormData({ ...formData, distrito: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="mw-form-group">
+              <label>Referencia</label>
+              <input
+                type="text"
+                value={formData.referencia}
+                onChange={(e) =>
+                  setFormData({ ...formData, referencia: e.target.value })
+                }
+              />
+            </div>
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Referencia
-            </label>
-            <input
-              type="text"
-              value={formData.referencia}
-              onChange={(e) =>
-                setFormData({ ...formData, referencia: e.target.value })
-              }
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
-
-          <div
-            style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}
-          >
+          <div className="mw-modal-footer">
             <button
               type="button"
+              className="mw-btn-secondary"
               onClick={onClose}
-              style={{
-                padding: "10px 20px",
-                background: "#95a5a6",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
             >
               Cancelar
             </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="mw-btn-primary"
-              style={{
-                padding: "10px 20px",
-                cursor: loading ? "not-allowed" : "pointer",
-              }}
-            >
+            <button type="submit" className="mw-btn-primary" disabled={loading}>
               {loading ? "Guardando..." : "Guardar"}
             </button>
           </div>

@@ -10,7 +10,7 @@ export default function ClientesPage() {
   const [editData, setEditData] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Cargar clientes al montar el componente
+  // Cargar clientes
   const cargarClientes = async () => {
     setLoading(true);
     try {
@@ -24,7 +24,6 @@ export default function ClientesPage() {
     }
   };
 
-  // Se ejecuta cuando el componente se monta
   useEffect(() => {
     cargarClientes();
   }, []);
@@ -41,7 +40,7 @@ export default function ClientesPage() {
     }
   };
 
-  // Filtrar clientes por búsqueda
+  // Filtrar por búsqueda
   const clientesFiltrados = clientes.filter(
     (c) =>
       c.nombres?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -51,97 +50,87 @@ export default function ClientesPage() {
 
   return (
     <div className="mw-page">
-      <h2 className="mw-page-title">Gestión de Clientes</h2>
+      <div className="mw-page-header">
+        <h2 className="mw-page-title">Gestión de Clientes</h2>
+        <button
+          className="mw-btn-primary"
+          onClick={() => {
+            setEditData(null);
+            setShowForm(true);
+          }}
+        >
+          + Nuevo Cliente
+        </button>
+      </div>
 
-      {/* Botón para crear nuevo cliente - ABRE EL FORMULARIO MODAL */}
-      <button
-        className="mw-btn-primary"
-        onClick={() => {
-          setEditData(null);
-          setShowForm(true);
-        }}
-      >
-        + Nuevo Cliente
-      </button>
+      {/* Búsqueda */}
+      <div className="mw-search-box">
+        <input
+          type="text"
+          placeholder="Buscar por nombre, apellido o DNI..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="mw-search-input"
+        />
+      </div>
 
-      {/* Campo de búsqueda */}
-      <input
-        type="text"
-        placeholder="Buscar por nombre, apellido o DNI..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{
-          marginLeft: "10px",
-          padding: "10px",
-          borderRadius: "5px",
-          border: "1px solid #ccc",
-          width: "300px",
-        }}
-      />
-
-      {/* Tabla de clientes */}
+      {/* Tabla */}
       {loading ? (
-        <p>Cargando clientes...</p>
+        <p className="mw-loading">Cargando clientes...</p>
       ) : clientesFiltrados.length === 0 ? (
-        <p>No hay clientes registrados</p>
+        <p className="mw-empty">No hay clientes registrados</p>
       ) : (
-        <table className="mw-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre Completo</th>
-              <th>DNI</th>
-              <th>Teléfono</th>
-              <th>Email</th>
-              <th>Distrito</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientesFiltrados.map((cliente) => (
-              <tr key={cliente.id}>
-                <td>{cliente.id}</td>
-                <td>
-                  {cliente.nombres} {cliente.apellidos}
-                </td>
-                <td>{cliente.dni}</td>
-                <td>{cliente.celular}</td>
-                <td>{cliente.email || "-"}</td>
-                <td>{cliente.distrito || "-"}</td>
-                <td className="mw-actions">
-                  {/* Botón EDITAR - Abre el formulario con datos */}
-                  <button
-                    className="mw-btn-primary"
-                    onClick={() => {
-                      setEditData(cliente);
-                      setShowForm(true);
-                    }}
-                  >
-                    Editar
-                  </button>
-
-                  {/* Botón ELIMINAR - Solicita confirmación */}
-                  <button
-                    style={{
-                      background: "#e74c3c",
-                      color: "white",
-                      padding: "10px 16px",
-                      borderRadius: "8px",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleEliminar(cliente.id)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
+        <div className="mw-table-container">
+          <table className="mw-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre Completo</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Distrito</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {clientesFiltrados.map((cliente) => (
+                <tr key={cliente.id}>
+                  <td>{cliente.id}</td>
+                  <td>
+                    {cliente.nombres} {cliente.apellidos}
+                  </td>
+                  <td>{cliente.dni}</td>
+                  <td>{cliente.celular}</td>
+                  <td>{cliente.email || "-"}</td>
+                  <td>{cliente.distrito || "-"}</td>
+                  <td className="mw-actions">
+                    <button
+                      className="mw-btn-edit"
+                      onClick={() => {
+                        setEditData(cliente);
+                        setShowForm(true);
+                      }}
+                      title="Editar"
+                    >
+                      ✎ Editar
+                    </button>
+                    <button
+                      className="mw-btn-delete"
+                      onClick={() => handleEliminar(cliente.id)}
+                      title="Eliminar"
+                    >
+                      ✕ Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      {/* Modal FORMULARIO - Se muestra SOLO si showForm es true */}
+      {/* Modal Formulario */}
       {showForm && (
         <ClientesForm
           editData={editData}

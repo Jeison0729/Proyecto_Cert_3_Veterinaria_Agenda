@@ -25,7 +25,7 @@ public class AgendaRestController {
     private final RecordatorioService recordatorioService;
     private final ReportesAgendaService reportesService;
     
-    @PostMapping("/crear")
+    @PostMapping
     public ResponseEntity<ApiResponse<AgendaResponseDTO>> crearCita(
             @RequestBody AgendaCreateRequestDTO request
     ) {

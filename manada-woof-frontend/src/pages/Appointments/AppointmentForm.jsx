@@ -1,4 +1,3 @@
-// src/pages/Appointments/AppointmentForm.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { getMascotasByCliente, createAgenda } from "../../api";
 import ServicesTable from "./ServicesTable";
@@ -15,12 +14,9 @@ export default function AppointmentForm({
   const [form, setForm] = useState({
     clienteId: "",
     mascotaId: "",
-    fecha: new Date().toISOString().slice(0, 10),
+    fecha: "",
     hora: "10:00",
-    idEstado: 2,
-    idMedioSolicitud: 4,
-    abonoInicial: 0,
-    idMedioPago: 1,
+    abonoInicial: "0",
     observaciones: "",
   });
 
@@ -29,12 +25,14 @@ export default function AppointmentForm({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!form.clienteId) return setMascotas([]);
+    if (!form.clienteId) {
+      setMascotas([]);
+      return;
+    }
     (async () => {
       try {
         const res = await getMascotasByCliente(form.clienteId);
-        const data = Array.isArray(res) ? res : (res?.data ?? res);
-        setMascotas(data || []);
+        setMascotas(Array.isArray(res) ? res : []);
       } catch (err) {
         console.error(err);
         setMascotas([]);
@@ -69,25 +67,32 @@ export default function AppointmentForm({
 
   async function handleSave(e) {
     e.preventDefault();
+
     if (!form.clienteId || !form.mascotaId) {
       alert("Seleccione cliente y mascota");
       return;
     }
     if (detalleServicios.length === 0) {
-      alert("Agregue servicios");
+      alert("Agregue al menos un servicio");
       return;
     }
+    if (!form.fecha || !form.hora) {
+      alert("Seleccione fecha y hora");
+      return;
+    }
+
+    setLoading(true);
 
     const payload = {
       idCliente: Number(form.clienteId),
       idMascota: Number(form.mascotaId),
       fecha: form.fecha,
-      hora: form.hora.length === 5 ? `${form.hora}:00` : form.hora,
-      abonoInicial: Number(form.abonoInicial || 0),
-      idEstado: Number(form.idEstado),
-      idMedioSolicitud: Number(form.idMedioSolicitud),
+      hora: form.hora.length === 5 ? form.hora + ":00" : form.hora,
+      idEstado: 1,
+      idMedioSolicitud: 1,
       observaciones: form.observaciones || "",
-      idUsuarioRegistro: Number(user?.id || user?.usuario || 1),
+      abonoInicial: Number(form.abonoInicial || 0),
+      idUsuarioRegistro: Number(user?.id || 1),
       servicios: detalleServicios.map((s) => ({
         idServicio: Number(s.id_servicio),
         idPersonal: Number(s.id_personal),
@@ -97,130 +102,198 @@ export default function AppointmentForm({
       })),
     };
 
-    if (Number(form.abonoInicial) > 0) {
-      payload.idMedioPago = Number(form.idMedioPago);
+    if (payload.abonoInicial > 0) {
+      payload.idMedioPago = 1;
+    }
+
+    if (form.fecha && form.hora) {
+      payload.recordatorioTipo = "PRE_CITA";
+      payload.recordatorioFecha = `${form.fecha}T${form.hora.length === 5 ? form.hora + ":00" : form.hora}`;
     }
 
     try {
-      setLoading(true);
-      console.log("PAYLOAD:", JSON.stringify(payload, null, 2));
-      await createAgenda(payload);
-      alert("Cita registrada");
+      console.log("📤 PAYLOAD:", JSON.stringify(payload, null, 2));
+      const response = await createAgenda(payload);
+      console.log("✅ RESPUESTA:", response);
+
+      alert("Cita agendada exitosamente");
+
       setDetalleServicios([]);
       setForm({
         clienteId: "",
         mascotaId: "",
-        fecha: new Date().toISOString().slice(0, 10),
+        fecha: "",
         hora: "10:00",
-        idEstado: 2,
-        idMedioSolicitud: 4,
-        abonoInicial: 0,
-        idMedioPago: 1,
+        abonoInicial: "0",
         observaciones: "",
       });
-      if (typeof onSaved === "function") onSaved();
+
+      onSaved?.();
     } catch (err) {
-      console.error("Error crear agenda", err);
-      console.log("ERROR RESPONSE:", err?.response?.data);
-      alert(err?.response?.data?.message || "Error registrando cita");
+      console.error("❌ ERROR:", err);
+      console.error("❌ RESPONSE:", err.response);
+      const msg =
+        err.response?.data?.message || err.message || "Error desconocido";
+      alert("Error al agendar: " + msg);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <form className="card p-3" onSubmit={handleSave}>
-      <h5>Datos de la Cita</h5>
-      <div className="mb-2">
-        <label>Cliente</label>
-        <select
-          className="form-select"
-          name="clienteId"
-          value={form.clienteId}
-          onChange={handleChange}
-        >
-          <option value="">Seleccionar cliente</option>
-          {Array.isArray(clientes) &&
-            clientes.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.nombres} {c.apellidos} (ID {c.id})
-              </option>
-            ))}
-        </select>
+    <div className="card border-0 shadow-sm">
+      <div className="card-header bg-primary text-white">
+        <h5 className="mb-0 fw-bold">Datos de la Cita</h5>
       </div>
 
-      <div className="mb-2">
-        <label>Mascota</label>
-        <select
-          className="form-select"
-          name="mascotaId"
-          value={form.mascotaId}
-          onChange={handleChange}
-        >
-          <option value="">Seleccionar mascota</option>
-          {mascotas.map((m) => (
-            <option key={m.id} value={m.id}>
-              {m.nombre}
-            </option>
-          ))}
-        </select>
-      </div>
+      <div className="card-body">
+        <div className="row g-3">
+          <div className="col-md-6">
+            <label className="form-label fw-semibold">Cliente</label>
+            <select
+              className="form-select"
+              name="clienteId"
+              value={form.clienteId}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Seleccionar cliente</option>
+              {Array.isArray(clientes) &&
+                clientes.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nombres} {c.apellidos}
+                  </option>
+                ))}
+            </select>
+          </div>
 
-      <div className="row">
-        <div className="col">
-          <label>Fecha</label>
-          <input
-            type="date"
-            className="form-control"
-            name="fecha"
-            value={form.fecha}
-            onChange={handleChange}
-          />
+          <div className="col-md-6">
+            <label className="form-label fw-semibold">Mascota</label>
+            <select
+              className="form-select"
+              name="mascotaId"
+              value={form.mascotaId}
+              onChange={handleChange}
+              disabled={!form.clienteId}
+              required
+            >
+              <option value="">Seleccionar mascota</option>
+              {mascotas.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.nombre} - {m.especie}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="col-md-4">
+            <label className="form-label fw-semibold">Fecha</label>
+            <input
+              type="date"
+              className="form-control"
+              name="fecha"
+              value={form.fecha}
+              onChange={handleChange}
+              min={new Date().toISOString().split("T")[0]}
+              required
+            />
+          </div>
+
+          <div className="col-md-4">
+            <label className="form-label fw-semibold">Hora</label>
+            <input
+              type="time"
+              className="form-control"
+              name="hora"
+              value={form.hora}
+              onChange={handleChange}
+              step="900"
+              required
+            />
+          </div>
+
+          <div className="col-md-4">
+            <label className="form-label fw-semibold">
+              Abono Inicial (S/.)
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              name="abonoInicial"
+              value={form.abonoInicial}
+              onChange={handleChange}
+              min="0"
+              step="0.01"
+            />
+          </div>
+
+          <div className="col-12">
+            <label className="form-label fw-semibold">Observaciones</label>
+            <textarea
+              className="form-control"
+              name="observaciones"
+              value={form.observaciones}
+              onChange={handleChange}
+              rows="2"
+              placeholder="Notas adicionales..."
+            />
+          </div>
         </div>
-        <div className="col">
-          <label>Hora</label>
-          <input
-            type="time"
-            className="form-control"
-            name="hora"
-            value={form.hora}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
 
-      <div className="mt-3">
+        <hr className="my-4" />
+
+        <h6 className="fw-bold mb-3">Servicios</h6>
         <ServicesTable
           servicios={servicios}
           personal={personal}
           detalleServicios={detalleServicios}
           setDetalleServicios={setDetalleServicios}
         />
+
+        <div className="alert alert-light border mt-3 d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Duración Total:</strong> {totalDuracion} min
+          </div>
+          <div>
+            <strong>Costo Total:</strong> S/ {totalCosto.toFixed(2)}
+          </div>
+        </div>
       </div>
 
-      <div className="mt-2 d-flex justify-content-between align-items-center">
-        <div>
-          Total Duración: <strong>{totalDuracion} min</strong>
-        </div>
-        <div>
-          Costo Total: <strong>S/ {totalCosto.toFixed(2)}</strong>
-        </div>
-      </div>
-
-      <div className="mt-3 d-flex gap-2">
+      <div className="card-footer bg-light d-flex gap-2 justify-content-end">
         <button
           type="button"
           className="btn btn-secondary"
           onClick={() => {
             setDetalleServicios([]);
+            setForm({
+              clienteId: "",
+              mascotaId: "",
+              fecha: "",
+              hora: "10:00",
+              abonoInicial: "0",
+              observaciones: "",
+            });
           }}
         >
           Cancelar
         </button>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Guardando..." : "Agendar cita"}
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={loading}
+          onClick={handleSave}
+        >
+          {loading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2"></span>
+              Guardando...
+            </>
+          ) : (
+            "Agendar Cita"
+          )}
         </button>
       </div>
-    </form>
+    </div>
   );
 }

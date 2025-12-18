@@ -90,13 +90,21 @@ public class MascotaServiceImpl implements MascotaService {
         MascotaEntity entity = mascotaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Mascota no encontrada"));
         
-        EspecieEntity especie = especieRepository.findById(request.getIdEspecie()).orElseThrow();
+        // Solo actualizar especie si se envía un idEspecie válido
+        if (request.getIdEspecie() != null && request.getIdEspecie() > 0) {
+            EspecieEntity especie = especieRepository.findById(request.getIdEspecie())
+                    .orElseThrow(() -> new RuntimeException("Especie no encontrada"));
+            entity.setEspecie(especie);
+        }
         
-        SexoEntity sexo = sexoRepository.findById(request.getIdSexo()).orElseThrow();
+        // Solo actualizar sexo si se envía un idSexo válido
+        if (request.getIdSexo() != null && request.getIdSexo() > 0) {
+            SexoEntity sexo = sexoRepository.findById(request.getIdSexo())
+                    .orElseThrow(() -> new RuntimeException("Sexo no encontrado"));
+            entity.setSexo(sexo);
+        }
         
-        entity.setEspecie(especie);
-        entity.setSexo(sexo);
-        
+        // Actualizar los demás campos (siempre)
         entity.setNombre(request.getNombre());
         entity.setRaza(request.getRaza());
         entity.setFechaNacimiento(request.getFechaNacimiento());
@@ -106,7 +114,8 @@ public class MascotaServiceImpl implements MascotaService {
         entity.setObservaciones(request.getObservaciones());
         entity.setFoto(request.getFoto());
         
-        if(request.getIdCliente() != null) {
+        // Solo cambiar cliente si se envía uno nuevo
+        if (request.getIdCliente() != null && request.getIdCliente() > 0) {
             ClienteEntity nuevoCliente = clienteRepository.findById(request.getIdCliente())
                     .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
             entity.setCliente(nuevoCliente);

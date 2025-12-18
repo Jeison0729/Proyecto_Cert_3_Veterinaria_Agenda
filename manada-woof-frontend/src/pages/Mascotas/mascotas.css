@@ -1,0 +1,72 @@
+/* Modal overlay background */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+/* Página */
+.mw-page {
+  padding: 30px;
+}
+
+/* Hover en tabla */
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Botones en tabla */
+.btn-sm {
+  font-size: 0.875rem;
+  padding: 0.4rem 0.6rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .mw-page {
+    padding: 15px;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+
+  .modal-dialog {
+    margin: 10px;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+/* Animación modal */
+.modal.show {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
